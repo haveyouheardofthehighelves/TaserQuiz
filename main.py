@@ -1,4 +1,10 @@
+#step 1 create the basic version of the product
+#step 2 add web server
+#step 3 add sql database of users
+
 import serial
+import tkinter
+import elevenlabs
 
 
 def writetoarduino(writeall):
