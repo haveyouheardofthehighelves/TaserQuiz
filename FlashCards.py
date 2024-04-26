@@ -24,12 +24,6 @@ def button_press():
 def activate_taser():
     pass
 
-
-def update_flashcard(q_count):
-    print("hello")
-    Question.config(text=df.iloc[q_count]['Question'])
-
-
 df = pandas.read_csv("test.csv")
 
 root = tk.Tk()
