@@ -5,8 +5,9 @@
 import serial
 import tkinter as tk
 import elevenlabs
-import pandas
+import pandas as pd
 import hardware_manager
+from tkinter.filedialog import askopenfilename
 
 
 def writetoarduino(writeall):
@@ -24,7 +25,16 @@ def button_press():
 def activate_taser():
     pass
 
-df = pandas.read_csv("test.csv")
+
+root = tk.Tk()
+root.withdraw()
+filez = tk.filedialog.askopenfilenames(parent=root, title='Choose a file')
+files = root.tk.splitlist(filez)
+g = []
+for i in files:
+    g.append(pd.read_csv(i))
+
+df = pd.concat(g)
 
 root = tk.Tk()
 root.title("FlashCard")
@@ -34,6 +44,7 @@ root.grid_columnconfigure(0, weight=1)
 # Create widgets
 frame_main = tk.Frame(root, background="white")
 frame_main.grid(row=0, column=0, sticky="nesw")
+frame_main.focus_set()  # Set focus to frame_main
 
 Question = tk.Label(frame_main, text='Question', width=45, height=19, borderwidth=2, relief="solid",
                     font=("Arial", 12), fg="green", bg="white", wraplength=400)

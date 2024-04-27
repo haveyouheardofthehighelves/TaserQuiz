@@ -2,10 +2,10 @@
 import speech_recognition
 import elevenlabs
 import pyttsx3
-import pygame
 import re
 import os
 import sys
+import time
 # 11labsapikey: 562229f81d2737d38a2c54b0d3d20c6e
 
 elevenlabs.set_api_key("562229f81d2737d38a2c54b0d3d20c6e")
@@ -46,9 +46,10 @@ Piggy_listen = False
 
 
 answer = ""
-
+print("wait...")
+time.sleep(1)
+print("speak...")
 listen = False
-
 while True:
     try:
         with speech_recognition.Microphone() as mic:
@@ -56,6 +57,7 @@ while True:
             audio = recognizer.listen(mic)
             text = recognizer.recognize_google(audio)
             text = text.lower()
+            print(text)
             with open('output.txt', 'w+') as file:
                 file.write(text)
             break
@@ -68,3 +70,6 @@ while True:
         print(e)
     except KeyboardInterrupt:
         break
+
+
+print("process closed")
