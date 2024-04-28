@@ -25,6 +25,9 @@ def button_press():
 def activate_taser():
     pass
 
+uid = ""
+with open('current_player.txt', 'r') as file:
+    uid = file.readlines()[0].strip()
 
 root = tk.Tk()
 root.withdraw()
@@ -54,6 +57,6 @@ Answer = tk.Label(frame_main, text='Answer', width=45, height=20, borderwidth=2,
                   font=("Arial", 12), fg="red", bg="white", wraplength=400)
 Answer.grid(row=1, column=0, sticky="s", padx=3, pady=1, columnspan=2)  # Adjusted row to 1
 
-control_manage = hardware_manager.ControllerApp(root, df, Question, Answer)
+control_manage = hardware_manager.ControllerApp(root, df, Question, Answer, filez, uid)
 
 root.mainloop()

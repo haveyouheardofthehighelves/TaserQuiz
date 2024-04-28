@@ -56,11 +56,13 @@ while True:
             recognizer.adjust_for_ambient_noise(mic, duration=1.15)
             audio = recognizer.listen(mic)
             text = recognizer.recognize_google(audio)
-            text = text.lower()
-            print(text)
-            with open('output.txt', 'w+') as file:
-                file.write(text)
-            break
+            text = str(text).strip().lower()
+            if 'a' <= text[0] <= 'd':  # Check if the first character is between 'a' and 'd' inclusive
+                with open('output.txt', 'w+',  newline='') as file:
+                    file.write(text)
+                    break
+            else:
+                print("Try again, invalid answer")
     except speech_recognition.UnknownValueError:
         if Piggy_listen:
             elevenlabs.play(repeat_dialogue)

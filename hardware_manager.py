@@ -4,9 +4,10 @@ import pandas
 import elevenlabs
 import speech_recognition
 import subprocess
-
-
-
+import datetime
+import csv
+import sys
+import psutil
 
 
 class ControllerApp:
@@ -19,6 +20,7 @@ class ControllerApp:
     vc_on = False
     processing = False
     recognizer = speech_recognition.Recognizer()
+    record_csv = []
     Expressive = elevenlabs.Voice(
         voice_id='jBpfuIE2acCO8z3wKNLl',
         settings=elevenlabs.VoiceSettings(
@@ -27,16 +29,23 @@ class ControllerApp:
         )
     )
 
-    def __init__(self, root, df, q_label, a_label):
+    def __init__(self, root, df, q_label, a_label, filenames, uid):
         self.root = root
         self.df = df  # Call this method once when the object is created
         self.q_label = q_label
         self.a_label = a_label
         self.update_controller_input()
+        self.filenames = filenames
+        self.uid = uid
 
     def writetoarduino(self, writeall):
         arr = bytes(writeall, 'utf-8')
         self.ser.write(arr)
+
+    def kill_processes_by_name(self, process_name):
+        for proc in psutil.process_iter():
+            if proc.name() == process_name:
+                proc.kill()
 
     def update_controller_input(self):
         # check and update label text
@@ -56,6 +65,11 @@ class ControllerApp:
                         self.writetoarduino('g')
                     else:
                         self.writetoarduino('r')
+                    self.record_csv.append({"Question": self.df.iloc[self.question_count]["Question"],
+                                            'Actual Answer': self.df.iloc[self.question_count][
+                                                self.df.iloc[self.question_count]["Solution"]],
+                                            'Player Answer': self.df.iloc[self.question_count][
+                                                ans[0].strip()[0].upper()]})
                     self.processing = True
                     self.answer_state = 2
             with open('output.txt', 'w') as file:
@@ -79,7 +93,8 @@ class ControllerApp:
                                     self.answer_state = 1
                                     self.a_label.config(text="State your Answer Choice: ")
                                     if not self.vc_on:
-                                        subprocess.Popen(["python", "Voice_MC.py"], shell=True)
+                                        self.kill_processes_by_name("Voice_MC.py")
+                                        subprocess.Popen(["python", "Voice_MC.py"])
                                         self.vc_on = True
                                     # Show the answer when button is pressed first time
                                 else:
@@ -88,6 +103,25 @@ class ControllerApp:
                                         if self.question_count < self.df.shape[0] - 1:
                                             self.question_count += 1
                                             self.answer_state = 0
+                                        else:
+                                            name = ""
+                                            for i in self.filenames:
+                                                name += i.split('/')[-1][:-4] + '_'
+                                            name = 'Project' + '/' + self.uid + '/' + name
+                                            with open(name + str(
+                                                    datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')) + '.csv',
+                                                      'w+') as file:
+                                                fields = ['Question', 'Actual Answer', 'Player Answer']
+                                                writer = csv.DictWriter(file, fieldnames=fields, lineterminator='\n')
+                                                # writing headers (field names)
+                                                writer.writeheader()
+                                                # writing data rows
+                                                writer.writerows(self.record_csv)
+                                                with open('current_player.txt', 'w') as file:
+                                                    file.write("")
+                                                sys.exit(0)
+
+
                             elif int(decoded_data[0]) == 0:
                                 self.button_press = False
             self.answer_options()
@@ -97,7 +131,7 @@ class ControllerApp:
 
     def answer_options(self):
         first_choice = ord('A')
-        last_choice = ord('C')
+        last_choice = ord('D')
         full = ""
         if self.answer_state == 0:
             for i in range(first_choice, last_choice + 1):
