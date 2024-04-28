@@ -2,9 +2,7 @@
 # step 2 add web server
 # step 3 add sql database of users
 
-import serial
 import tkinter as tk
-import elevenlabs
 import pandas as pd
 import hardware_manager
 from tkinter.filedialog import askopenfilename

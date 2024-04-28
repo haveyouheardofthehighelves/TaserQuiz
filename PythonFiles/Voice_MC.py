@@ -10,17 +10,6 @@ import time
 
 elevenlabs.set_api_key("562229f81d2737d38a2c54b0d3d20c6e")
 
-
-def play_audio(file_path):
-    pygame.mixer.init()
-    pygame.mixer.music.load(file_path)
-    pygame.mixer.music.play()
-    # Wait for the music to finish playing
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
-    pygame.mixer.quit()
-
-
 # Replace 'your_audio_file.mp3' with the path to your audio file
 '''voices = elevenlabs.voices()
 pattern = '(name=\'\w*\').*(labels={.*})'
@@ -58,7 +47,7 @@ while True:
             text = recognizer.recognize_google(audio)
             text = str(text).strip().lower()
             if 'a' <= text[0] <= 'd':  # Check if the first character is between 'a' and 'd' inclusive
-                with open('output.txt', 'w+',  newline='') as file:
+                with open('output.txt', 'w+', newline='') as file:
                     file.write(text)
                     break
             else:
