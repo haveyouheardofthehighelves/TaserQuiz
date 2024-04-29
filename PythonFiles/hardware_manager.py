@@ -131,7 +131,7 @@ class ControllerApp:
 
     def answer_options(self):
         first_choice = ord('A')
-        last_choice = ord('D')
+        last_choice = ord('C')
         full = ""
         if self.answer_state == 0:
             for i in range(first_choice, last_choice + 1):

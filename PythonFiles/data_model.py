@@ -1,9 +1,8 @@
 import os
-import os, shutil
-import pandas as pd
+import shutil
+import subprocess
 import pandas as pd
 import matplotlib.pyplot as plt
-import glob
 import operator
 
 
@@ -253,14 +252,6 @@ def bar_chart_menu(directory_path):
             print("\nSorry, invalid input. Please try again.\n")
 
 
-import os
-import shutil
-import subprocess
-import pandas as pd
-import matplotlib.pyplot as plt
-import glob
-
-question_set1 = pd.read_csv("../test.csv")
 user_ids = pd.read_csv("user_ids.csv", dtype=str)
 
 
@@ -355,11 +346,6 @@ def menu(directory_path, user_ids):
             print("\nExiting menu")
         else:
             print("\nSorry, invalid input. Please try again.\n")
-
-
-def get_accuracy(user_id, csv_file):
-    pass
-
 
 dir_path = "../Project/"
 if (os.path.exists(dir_path) == False):

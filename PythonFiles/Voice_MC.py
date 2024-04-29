@@ -46,7 +46,7 @@ while True:
             audio = recognizer.listen(mic)
             text = recognizer.recognize_google(audio)
             text = str(text).strip().lower()
-            if 'a' <= text[0] <= 'd':  # Check if the first character is between 'a' and 'd' inclusive
+            if 'a' <= text[0] <= 'c':  # Check if the first character is between 'a' and 'd' inclusive
                 with open('output.txt', 'w+', newline='') as file:
                     file.write(text)
                     break
