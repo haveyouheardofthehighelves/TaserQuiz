@@ -1,0 +1,169 @@
+import csv
+import random
+from datetime import datetime
+
+
+# Function to generate a random timestamp
+def generate_random_timestamp():
+    year = random.randint(2020, 2024)
+    month = random.randint(1, 12)
+    day = random.randint(1, 28)  # Simplified to avoid invalid dates
+    hour = random.randint(0, 23)
+    minute = random.randint(0, 59)
+    second = random.randint(0, 59)
+
+    # Creating the timestamp
+    timestamp = datetime(year, month, day, hour, minute, second)
+    return timestamp.strftime('%Y-%m-%d-%H-%M-%S')
+
+questions1 = [
+    {
+        "question": "What base binds to adenine in RNA",
+        "options": ["thymine", "cytocine", "uracil"],
+        "solution": "C"
+    },
+    {
+        "question": "The probability of a Ff x Ff cross producing a ff genotype is",
+        "options": ["50%", "25%", "75%"],
+        "solution": "B"
+    },
+    {
+        "question": "Structures that have the same function in different organisms",
+        "options": ["divergent evolution", "convergent evolution", "analogous structures"],
+        "solution": "C"
+    },
+    {
+        "question": "Who believed that organisms change over time due to a desire to become perfect",
+        "options": ["Lamark", "Darwin", "Mendel"],
+        "solution": "A"
+    },
+    {
+        "question": "Areas of DNA that are not needed and discarded",
+        "options": ["Exons", "Introns", "Anons"],
+        "solution": "B"
+    },
+    {
+        "question": "Molecule that causes transformation in bacteria",
+        "options": ["DNA", "RNA", "enzymes"],
+        "solution": "A"
+    }
+]
+questions2 = [
+    {
+        "question": "A codon is switched with another codon",
+        "options": ["addition", "substitution", "deletion"],
+        "solution": "B"
+    },
+    {
+        "question": "The RNA that coordinates activities in protein making; makes up the ribosome",
+        "options": ["rRNA", "mRNA", "tRNA"],
+        "solution": "A"
+    },
+    {
+        "question": "Cytocine is a",
+        "options": ["purine", "pyrimidine", "neither"],
+        "solution": "B"
+    },
+    {
+        "question": "When organisms compete for the same resources",
+        "options": ["parasitism", "mutualism", "competition"],
+        "solution": "C"
+    },
+    {
+        "question": "A virus is",
+        "options": ["eukaryote", "prokaryote", "neither"],
+        "solution": "C"
+    },
+    {
+        "question": "Cylindrical bacteria are called",
+        "options": ["bacillus", "cocci", "spirilla"],
+        "solution": "A"
+    },
+    {
+        "question": "A cell shrinks in what type of solution",
+        "options": ["hypertonic", "hypotonic", "isotonic"],
+        "solution": "A"
+    }
+]
+questions3 = [
+    {
+        "question": "Dolly the sheep is an example of",
+        "options": ["transgenic organism", "gmo", "cloning"],
+        "solution": "C"
+    },
+    {
+        "question": "They control differentiation of cells and tissues in the embryo",
+        "options": ["hox genes", "DNA", "hormones"],
+        "solution": "A"
+    },
+    {
+        "question": "Both phenotypes appear in traits that are",
+        "options": ["incompletely dominant", "polygenic", "codominant"],
+        "solution": "C"
+    },
+    {
+        "question": "Natural selection that favors the extremes",
+        "options": ["stabilizing selection", "disruptive selection", "directional selection"],
+        "solution": "B"
+    },
+    {
+        "question": "Glucose, galactose and fructose are an example of this",
+        "options": ["polysaccharides", "monosaccharides", "lipids"],
+        "solution": "B"
+    },
+    {
+        "question": "Performs intracellular digestion",
+        "options": ["lysosome", "golgi apparatus", "rough er"],
+        "solution": "A"
+    },
+    {
+        "question": "The phase where the nuclear envelope has been broken down into fragments",
+        "options": ["prophase", "prometaphase", "metaphase"],
+        "solution": "B"
+    }
+]
+questions4 = [
+    {
+        "question": "The period of intense growth and biochemical activity for a cell",
+        "options": ["g1", "g2", "s"],
+        "solution": "A"
+    },
+    {
+        "question": "Proteins that activate other proteins by phosphorylating them",
+        "options": ["cyclins", "MPF", "kinase"],
+        "solution": "C"
+    },
+    {
+        "question": "Male calico cats have these sex chromosomes",
+        "options": ["XXY", "XYY", "XY"],
+        "solution": "A"
+    },
+    {
+        "question": "Begins when RNA polymerase recognizes and binds to DNA at the promoter region",
+        "options": ["initiation", "elongation", "termination"],
+        "solution": "A"
+    },
+    {
+        "question": "The sequence of nucleotides near the start of an operon to which the active repressor can attach",
+        "options": ["promoter", "operator", "repressor"],
+        "solution": "B"
+    }
+]
+
+all_questions = [questions1, questions2, questions3, questions4]
+
+# Loop through each set of questions
+for index, questions in enumerate(all_questions, start=1):
+    for i in range(100):
+        formatted_timestamp = f"BioQuestionsQ{index}_{generate_random_timestamp()}"
+        output_path = f'Q{index}'  
+        full_file_path = f"{output_path}/{formatted_timestamp}.csv"
+
+        with open(full_file_path, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['Question', 'Actual Answer', 'Player Answer'])
+            
+            for q in questions:
+                actual_answer = q["options"]["ABC".index(q["solution"])-1]
+                player_answer = random.choice(q["options"])
+                writer.writerow([q["question"], actual_answer, player_answer])
